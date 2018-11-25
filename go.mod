@@ -1,1 +1,1 @@
-module github.com/JasonTy/go-study-demo
+module go/study/demo
