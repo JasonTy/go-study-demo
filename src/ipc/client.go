@@ -28,6 +28,11 @@ func (client *IpcClient)Call(method, params string)(resp *Response, err error) {
 
 	var resp1 Response
 	err = json.Unmarshal([]byte(str), &resp1)
+
+	if err != nil {
+		return
+	}
+
 	resp = &resp1
 
 	return
