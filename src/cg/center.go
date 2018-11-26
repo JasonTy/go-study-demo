@@ -62,7 +62,8 @@ func (server *CenterServer)reqmovePlayer(params string) error {
 				server.players = append(server.players[:i - 1], server.players[:i + 1]...)
 			}
 
-
 		}
 	}
+
+	return nil
 }

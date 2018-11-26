@@ -1,5 +1,10 @@
+#Go parameters
+GO=go
+GORUN=${GO} run
+GOTEST=${GO} test -v
+
 run:
-	go run main.go
+	${GORUN}
 
 test:
-	go test -v ./src/ipc
+	${GOTEST} ./src/ipc
