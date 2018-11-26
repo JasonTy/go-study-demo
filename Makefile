@@ -2,9 +2,13 @@
 GO=go
 GORUN=${GO} run
 GOTEST=${GO} test -v
+GOBUILD=${GO} build
 
 run:
-	${GORUN}
+	${GORUN} main.go
 
 test:
 	${GOTEST} ./src/ipc
+
+build:
+	${GOBUILD} main.go

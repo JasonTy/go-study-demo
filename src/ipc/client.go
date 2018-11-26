@@ -41,3 +41,5 @@ func (client *IpcClient)Call(method, params string)(resp *Response, err error) {
 func (client *IpcClient)Close() {
 	client.conn <- "CLOSE"
 }
+
+
