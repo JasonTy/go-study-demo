@@ -34,6 +34,7 @@ func (server *IpcServer) Connect() chan string {
 		for {
 			request := <-c
 			if request == "CLOSE" {
+				fmt.Println("Closed")
 				break
 			}
 			var req Request

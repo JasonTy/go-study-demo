@@ -23,6 +23,7 @@ func TestIpc(t *testing.T) {
 	client1 := NewIpcClient(server)
 	client2 := NewIpcClient(server)
 
+
 	resp1, _ := client1.Call("foo", "From Client1")
 	resp2, _ := client2.Call("foo", "From Client2")
 

@@ -3,6 +3,7 @@ package cg
 import (
 	"encoding/json"
 	"sync"
+	"errors"
 
 	"go/study/demo/src/ipc"
 )
@@ -60,21 +61,75 @@ func (server *CenterServer)removePlayer(params string) error {
 			} else {
 				server.players = append(server.players[:i], server.players[i + 1:]...)
 			}
+			return nil
 		}
 	}
-
-	return nil
+	return errors.New("Player not found")
 }
 
-func (server *CenterServer)Handle(method, params string) (resp *ipc.Response) {
-	var resp1 ipc.Response
-	resp = &resp1
-	return
-}
-
-func (server *CenterServer)Name() string {
+func (server *CenterServer)listPlayer(params string)(players string, err error) {
 	server.mutex.Lock()
 	defer server.mutex.Unlock()
 
-	return ""
+	if len(server.players) > 0 {
+		b, _ := json.Marshal(server.players)
+		players = string(b)
+	} else {
+		err = errors.New("No player online")
+	}
+	return
+}
+
+func (server *CenterServer)broadcast(params string) error {
+	var message Message
+	err := json.Unmarshal([]byte(params), &message)
+	if err != nil {
+		return err
+	}
+
+	server.mutex.Lock()
+	defer server.mutex.Unlock()
+
+	if len(server.players) > 0 {
+		for _, player := range server.players {
+			player.mq <- &message
+		}
+	} else {
+		err = errors.New("No player online")
+	}
+	return err
+}
+
+func (server *CenterServer)Handle(method, params string) *ipc.Response {
+	switch method {
+		case "addplayer":
+			err := server.addPlayer(params)
+			if err != nil {
+				return &ipc.Response{Code:err.Error()}
+			}
+		case "removeplayer":
+			err := server.removePlayer(params)
+			if err != nil {
+				return &ipc.Response{Code:err.Error()}
+			}
+		case "listplayer":
+			players, err := server.listPlayer(params)
+			if err != nil {
+				return &ipc.Response{Code:err.Error()}
+			}
+			return &ipc.Response{"200", players}
+		case "broadcast":
+			err := server.broadcast(params)
+			if err != nil {
+				return &ipc.Response{Code: err.Error()}
+			}
+			return &ipc.Response{Code:"200"}
+		default:
+			return &ipc.Response{"404", method + ":" + params}
+	}
+	return &ipc.Response{Code:"200"}
+}
+
+func (server *CenterServer)Name() string {
+	return "CenterServer"
 }
