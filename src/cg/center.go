@@ -2,7 +2,6 @@ package cg
 
 import (
 	"encoding/json"
-	"errors"
 	"sync"
 
 	"go/study/demo/src/ipc"
@@ -46,7 +45,7 @@ func (server *CenterServer)addPlayer(params string) error {
 	return nil
 }
 
-func (server *CenterServer)reqmovePlayer(params string) error {
+func (server *CenterServer)removePlayer(params string) error {
 	server.mutex.Lock()
 	defer server.mutex.Unlock()
 
@@ -59,11 +58,23 @@ func (server *CenterServer)reqmovePlayer(params string) error {
 			} else if i == 0 {
 				server.players = server.players[1:]
 			} else {
-				server.players = append(server.players[:i - 1], server.players[:i + 1]...)
+				server.players = append(server.players[:i], server.players[i + 1:]...)
 			}
-
 		}
 	}
 
 	return nil
+}
+
+func (server *CenterServer)Handle(method, params string) (resp *ipc.Response) {
+	var resp1 ipc.Response
+	resp = &resp1
+	return
+}
+
+func (server *CenterServer)Name() string {
+	server.mutex.Lock()
+	defer server.mutex.Unlock()
+
+	return ""
 }

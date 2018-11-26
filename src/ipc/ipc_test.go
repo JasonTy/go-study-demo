@@ -28,8 +28,8 @@ func TestIpc(t *testing.T) {
 
 	spew.Dump(resp1.Body)
 
-	if 	resp1.Body != "ECHO: foo ~ From Client1" ||
-		resp2.Body != "ECHO: foo ~ From Client2" {
+	if 	resp1.Body != "Echo:foo - From Client1" ||
+		resp2.Body != "Echo:foo - From Client2" {
 			t.Error("IpcClient.Call failed. resp1:", resp1, "resp2:", resp2)
 	}
 	client1.Close()
