@@ -12,3 +12,6 @@ test:
 
 build:
 	${GOBUILD} main.go
+
+append:
+	${GOTEST} ./src/splice-append
