@@ -5,13 +5,10 @@ GOTEST=${GO} test -v
 GOBUILD=${GO} build
 
 run:
-	${GORUN} main.go
+	${GORUN} src/cgss/cgss.go
 
 test:
 	${GOTEST} ./src/ipc
-
-build:
-	${GOBUILD} main.go
 
 append:
 	${GOTEST} ./src/splice-append

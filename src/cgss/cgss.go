@@ -1,2 +1,5 @@
-package cgss
+package main
 
+func main()  {
+
+}
